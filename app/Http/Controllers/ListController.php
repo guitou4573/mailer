@@ -16,13 +16,32 @@ class ListController extends Controller
 		$this->mailingHandler = new Mailchimp($this);
 	}
 
-	public function getLists( Request $request )
+	public function index( Request $request )
 	{
 		return $this->mailingHandler->getLists($request);
 	}
 
-	public function createCampaign(Request $request)
-	{
-		return view('subscription.create');
+	public function store(Request $request)
+	{  
+        $list = [
+            'name' => $request->listname,
+            'contact' => [
+                'company' => 'DumLi',
+                'address1' => '1 Wandaa Crt Coolum Beach',
+                'city' => 'Coolum Beach',
+                'state' => 'Qld',
+                'zip' => '4573',
+                'country' => 'Australia',
+            ],
+            'permission_reminder' => $request->reminder,
+            'campaign_defaults' => [
+                'from_name' => $request->listnamefrom,
+                'from_email' => $request->listemailfrom,
+                'subject' => 'My Subject',
+                'language' => 'english',
+            ],
+            'email_type_option' => false
+        ];
+        $this->mailingHandler->setList($list);
 	}	
 }

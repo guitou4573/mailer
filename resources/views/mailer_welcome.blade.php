@@ -1,1 +1,0 @@
-Mailchimp list subscription tool

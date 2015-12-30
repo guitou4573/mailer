@@ -11,17 +11,13 @@
 |
 */
 
-Route::get('/lists', ['uses' => 'ListController@getLists']);
+/*Route::get('/lists', ['uses' => 'ListController@getLists']);*/
 
+Route::resource('list', 'ListController');
 
-Route::get('/list/create', function () {
-    return view('list.create');
+Route::get('/', function(){
+    return view('list.index');
 });
-
-Route::get('/', function () {
-    return view('mailer_welcome');
-});
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes

@@ -21,6 +21,16 @@ class Mailchimp {
         $res = $this->client->request('GET', getenv('MAILCHIMP_API_URL') . '/lists', [
             'auth' => [getenv('MAILCHIMP_API_USR'), getenv('MAILCHIMP_API_KEY')]
         ]);
+
+        return ($res->getStatusCode() == 200 ? $res : false);
+    }
+    
+    public function setList($list)
+    {
+        $res = $this->client->request('POST', getenv('MAILCHIMP_API_URL') . '/lists', [
+            'auth' => [getenv('MAILCHIMP_API_USR'), getenv('MAILCHIMP_API_KEY')],
+            'body' => json_encode($list)
+        ]);
         
         return $res;
     }
