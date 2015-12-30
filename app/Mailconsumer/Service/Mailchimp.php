@@ -51,16 +51,25 @@ class Mailchimp {
             'body' => json_encode($member)
         ]);
         
-        return ($res->getStatusCode() == 200 ? $res : false);
+        return ($res->getStatusCode() == 200 ? $res : "error");
     }
     
-    public function updateMember($listid, $member)
+    public function updateMember($listid, $id, $member)
     {
-        $res = $this->client->request('PATCH', getenv('MAILCHIMP_API_URL') . '/lists/' .$listid. '/members/' .$member["hash"], [
+        $res = $this->client->request('PATCH', getenv('MAILCHIMP_API_URL') . '/lists/' .$listid. '/members/' .$id, [
             'auth' => [getenv('MAILCHIMP_API_USR'), getenv('MAILCHIMP_API_KEY')],
             'body' => json_encode($member)
         ]);
         
-        return ($res->getStatusCode() == 200 ? $res : false);
+        return ($res->getStatusCode() == 200 ? $res : "error");
+    }
+    
+    public function deleteMember($listid, $id)
+    {
+        $res = $this->client->request('DELETE', getenv('MAILCHIMP_API_URL') . '/lists/' .$listid. '/members/' .$id, [
+            'auth' => [getenv('MAILCHIMP_API_USR'), getenv('MAILCHIMP_API_KEY')],
+        ]);
+        
+        return $res;
     }
 }

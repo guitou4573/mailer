@@ -78,6 +78,12 @@ Coolum Beach, Qld 4573</textarea>
                             <div class="form-group">
                                 <label for="emailsub">Email address</label>
                                 <input type="email" class="form-control" id="emailsub" name="emailsub" placeholder="Email">
+                                <select id="statussub" name="statussub">
+                                    <option>subscribed</option>
+                                    <option>unsubscribed</option>
+                                    <option>cleaned</option>
+                                    <option>pending</option>
+                                </select>
                             </div>
                             <div class="checkbox">
                                 <label>
@@ -117,7 +123,7 @@ Coolum Beach, Qld 4573</textarea>
                                     {
                                         $.each( data.members, function( key, val ) {
                                             members[data.list_id][val.id] = val;
-                                            $("#mem_"+val.list_id).after( "<tr><td>"+val.email_address+"</td><td>"+val.status+"</td><td><button type=\"button\" class=\"btn btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#addSubs\" data-memid=\""+val.id+"\" data-listid=\""+val.list_id+"\">Edit</button></td></tr>" );
+                                            $("#mem_"+val.list_id).after( "<tr><td>"+val.email_address+"</td><td>"+val.status+"</td><td><button type=\"button\" class=\"btn btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#addSubs\" data-memid=\""+val.id+"\" data-listid=\""+val.list_id+"\">Edit</button><button type=\"button\" class=\"btn btn-info btn-xs\" onClick=\"deleteMember('"+val.list_id+"', '"+val.id+"');\">Delete</button></td></tr>" );
                                         });
                                     }
                                 });
@@ -126,9 +132,22 @@ Coolum Beach, Qld 4573</textarea>
                         $('#tableLists > tbody:last-child').html(items.join(""));
                     }
                 });
-            }
+            };
+            var deleteMember = function(listid, id) {
+                var data = {
+                    "listid":listid,
+                    "id":id
+                }
+                var jqxhr = $.ajax( {
+                                    method: "DELETE",
+                                    url: "subscriber/"+id,
+                                    data: data
+                                    }, function() {});
+                jqxhr.always = function() {getList();};
+            };
+                    
             $( "#createList" ).submit(function( event ) {
-                data = $(this).serialize();
+                var data = $(this).serialize();
                 var jqxhr = $.post( "list", data, function() {
                     $('#addLists').modal('hide')
                     getList();
@@ -161,6 +180,7 @@ Coolum Beach, Qld 4573</textarea>
                     {
                         mem = members[listid][memid];
                         modal.find('#emailsub').val(mem.email_address)
+                        modal.find('#statussub').val(mem.status)
                         modal.find('#hash').val(mem.id)
                     }
                 })

@@ -30,7 +30,7 @@ class SubscriberController extends Controller
         }
         $listid = $request->listid;
         $member = [
-            'status' => 'subscribed',
+            'status' => $request->statussub,
             'email_address' => $request->emailsub,
         ];
         if(!$request->hash)
@@ -39,9 +39,14 @@ class SubscriberController extends Controller
         }
         else
         {
-            $member["hash"] = $request->hash;
-            return $this->mailingHandler->updateMember($listid, $member);
+            return $this->mailingHandler->updateMember($listid, $request->hash, $member);
         }
-        
+    }
+    
+    public function destroy(Request $request)
+    {
+        $id = $request->id;
+        $listid = $request->listid;
+        return $this->mailingHandler->deleteMember($listid, $id);
     }
 }
