@@ -42,6 +42,6 @@ class ListController extends Controller
             ],
             'email_type_option' => false
         ];
-        $this->mailingHandler->setList($list);
-	}	
+        return $this->mailingHandler->setList($list);
+	}
 }

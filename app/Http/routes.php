@@ -14,6 +14,7 @@
 /*Route::get('/lists', ['uses' => 'ListController@getLists']);*/
 
 Route::resource('list', 'ListController');
+Route::resource('subscriber', 'SubscriberController');
 
 Route::get('/', function(){
     return view('list.index');

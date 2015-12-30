@@ -32,6 +32,35 @@ class Mailchimp {
             'body' => json_encode($list)
         ]);
         
-        return $res;
+        return ($res->getStatusCode() == 200 ? $res : false);
+    }
+    
+    public function getMembers($listid)
+    {
+        $res = $this->client->request('GET', getenv('MAILCHIMP_API_URL') . '/lists/' .$listid. '/members', [
+            'auth' => [getenv('MAILCHIMP_API_USR'), getenv('MAILCHIMP_API_KEY')]
+        ]);
+
+        return ($res->getStatusCode() == 200 ? $res : false);
+    }
+    
+    public function setMember($listid, $member)
+    {
+        $res = $this->client->request('POST', getenv('MAILCHIMP_API_URL') . '/lists/' .$listid. '/members', [
+            'auth' => [getenv('MAILCHIMP_API_USR'), getenv('MAILCHIMP_API_KEY')],
+            'body' => json_encode($member)
+        ]);
+        
+        return ($res->getStatusCode() == 200 ? $res : false);
+    }
+    
+    public function updateMember($listid, $member)
+    {
+        $res = $this->client->request('PATCH', getenv('MAILCHIMP_API_URL') . '/lists/' .$listid. '/members/' .$member["hash"], [
+            'auth' => [getenv('MAILCHIMP_API_USR'), getenv('MAILCHIMP_API_KEY')],
+            'body' => json_encode($member)
+        ]);
+        
+        return ($res->getStatusCode() == 200 ? $res : false);
     }
 }
