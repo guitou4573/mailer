@@ -11,8 +11,15 @@
 |
 */
 
+Route::get('/lists', ['uses' => 'ListController@getLists']);
+
+
+Route::get('/list/create', function () {
+    return view('list.create');
+});
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('mailer_welcome');
 });
 
 /*
